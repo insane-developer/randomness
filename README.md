@@ -1,5 +1,7 @@
 # Randomness Extractor
 
+[Try it here](https://insane-developer.github.io/randomness/)
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install`, start a development server:
