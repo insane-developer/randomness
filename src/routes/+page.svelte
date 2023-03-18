@@ -1,6 +1,6 @@
 <style>
-    html,
-    body{
+    :global(html),
+    :global(body) {
         border: 0;
         padding: 0;
         margin: 0;
@@ -10,9 +10,9 @@
         font-family: 'Courier New', Courier, monospace
     }
     main {
-        max-width: 1800px;
+        max-width: 1000px;
+        padding: 0 1em;
         margin: 0 auto;
-        border: 1px dashed red;
     }
     textarea {
         width: 100%;
@@ -22,11 +22,6 @@
         box-sizing: border-box;
 
     }
-    .wip {
-        pointer-events: none;
-        opacity: 0.8;
-        background: linear-gradient(45deg, #000 0, #000 24%, #ba0 25%,#ba0 75%, #000 76%, #000 100%) 0 0/80px 20px repeat;
-    }
     pre {
         white-space: normal;
     }
@@ -35,7 +30,7 @@
     import {
         extractWithTokens
     } from '../lib/extractor';
-    let input = [];
+    let inputLength = 0;
     let output: any[] = [];
 
     let probability: {token: string; p:number}[] = [];
@@ -52,6 +47,7 @@
         const str = e.target.value;
         const frequency = new Map;
         const input: string[] = str.split(/\s+/);
+        inputLength = input.length;
         input.forEach(token => {
             frequency.set(token, (frequency.get(token) || 0) + 1);
         });
@@ -64,23 +60,25 @@
     }
 
 </script>
-<h1>Welcome to Randomness Extractor</h1>
 <main>
+    <h1>Welcome to Randomness Extractor</h1>
     <div>
         <textarea placeholder="insert text here" on:change={process}></textarea>
     </div>
     <div>
-        <p>Input tokens: {input.length}</p>
+        <p>Input tokens: {inputLength}</p>
         <p>Input bits: {totalInfo}</p>
-        <details>
-            <table>
-                {#each probability as {token, p}}
-                    <tr><td>{token}</td><td>{p}</td></tr>
-                {/each}
-            </table>
-        </details>
-        <p>Output bits: {output.length}</p>
-        <div>Output: <pre>{output.join('​')}</pre></div>
-        <p>Avg: {output.reduce((sum, v) => sum+=v, 0)/output.length}</p>
+        {#if output.length}
+            <details>
+                <table>
+                    {#each probability as {token, p}}
+                        <tr><td>{token}</td><td>{p}</td></tr>
+                    {/each}
+                </table>
+            </details>
+            <p>Output bits: {output.length}</p>
+            <div>Output: <pre>{output.join('​')}</pre></div>
+            <p>Avg: {output.reduce((sum, v) => sum+=v, 0)/output.length}</p>
+        {/if}
     </div>
 </main>
